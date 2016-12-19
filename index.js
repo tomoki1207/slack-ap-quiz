@@ -119,7 +119,7 @@ controller.on('rtm_open', function (bot) {
     cronTime: '0 0 9,13,18 * * 1-5',
     onTick: function () {
       generateQuiz(function (reply) {
-        reply.channel = 'ipa-db';
+        reply.channel = 'ipa-ap';
         bot.say(reply);
       });
     },
@@ -146,7 +146,7 @@ controller.hears('quiz', ['direct_message', 'direct_mention'], function (bot, me
 });
 
 controller.on('interactive_message_callback', function (bot, message) {
-  if (message.callback_id === 'db_answer') {
+  if (message.callback_id === 'ap_answer') {
     var collect = message.actions[0].name === 'collect';
     var text = '';
     if (collect) {
@@ -162,7 +162,7 @@ controller.on('interactive_message_callback', function (bot, message) {
       'attachments': [{
         'text': text,
         'fallback': message.actions[0].value + ' を選択 ->' + (collect ? '正解' : '残念'),
-        'callback_id': 'db_answer',
+        'callback_id': 'ap_answer',
         'color': collect ? 'good' : 'danger'
       }],
       'response_type': 'in_channel',
@@ -174,7 +174,7 @@ controller.on('interactive_message_callback', function (bot, message) {
 var generateQuiz = function (cb) {
   cheerio.fetch('http://www.ap-siken.com/', null, function (er, $$) {
     if (er) {
-      console.log('Could not access www.db-siken.com');
+      console.log('Could not access www.ap-siken.com');
       return;
     }
 
@@ -206,7 +206,7 @@ var generateQuiz = function (cb) {
             'fallback': url,
             'image_url': process.env.HEROKU_URL + 'image?url=' + url,
             'color': '#808080',
-            'callback_id': 'db_answer',
+            'callback_id': 'ap_answer',
             'actions': [ans]
           };
           anss.push(att);
@@ -218,7 +218,7 @@ var generateQuiz = function (cb) {
         'title': q,
         'text': '\n\n詳細や画像が表示されていない場合はこちらへ\n' + link,
         'fallback': q,
-        'callback_id': 'db_answer',
+        'callback_id': 'ap_answer',
         'color': 'good'
       });
 
