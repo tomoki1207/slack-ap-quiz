@@ -200,7 +200,7 @@ var generateQuiz = function (cb) {
         } else {
           choiseByImg = true;
           // as other attachment
-          var url = link.replace(/am2_\d+\.html/i, img.attr('src'));
+          var url = link.replace(/q\d+\.html/i, img.attr('src'));
           var att = {
             'text': btn.find('button').text(),
             'fallback': url,
@@ -225,7 +225,7 @@ var generateQuiz = function (cb) {
       // show images
       $('.qno + div').find('.img_margin').each(function () {
         var d = $(this);
-        var url = link.replace(/am2_\d+\.html/i, d.find('img').attr('src'));
+        var url = link.replace(/q\d+\.html/i, d.find('img').attr('src'));
         attachments.push({
           'text': no,
           'fallback': url,
